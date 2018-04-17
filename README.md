@@ -122,6 +122,7 @@
 
 通过`ConnectableFlux`，可以向多个`Subscriber`发送广播
 
+方案一：
 
 `publish()-->connect()`:
 
@@ -135,6 +136,8 @@
     flux.connect();
 
 直到调用`connect()`方法，才会开始处理数据，即调用了`connect()`方法才会执行`subscribe()`方法中的代码
+
+方案二：
 
 `publish()-->autoConnect()`:
 
