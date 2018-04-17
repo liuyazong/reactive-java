@@ -134,6 +134,8 @@
     
     flux.connect();
 
+直到调用`connect()`方法，才会开始处理数据，即调用了`connect()`方法才会执行`subscribe()`方法中的代码
+
 `publish()-->autoConnect()`:
 
     Flux<Integer> flux = Flux.range(0, 4)
@@ -142,6 +144,8 @@
 
     flux.subscribe(i -> log.info("subscribe 1: {}", i));
     flux.subscribe(i -> log.info("subscribe 2: {}", i));
+    
+使用`autoConnect(int)`方法时，直到`subscribe()`被调用`N`(`autoConnect(int)`的参数)次才会开始执行任务，且最多有`N`个订阅者
 
 ## RxJava
 
