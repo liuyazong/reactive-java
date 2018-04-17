@@ -35,6 +35,13 @@ Subscription/Subscriber: 1/1
 Flux: public abstract class Flux<T> implements Publisher<T>
 Mono: public abstract class Mono<T> implements Publisher<T>
 
+引入依赖：
+
+    <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>3.1.6.RELEASE</version>
+    </dependency>
 
 ### 构建
 
@@ -138,3 +145,11 @@ publish()-->autoConnect():
 ## RxJava
 
 [RxJava](https://github.com/ReactiveX/RxJava)是另一个[Reactive Streams Specification](http://www.reactive-streams.org/)的实现。
+
+引入依赖：
+
+    <dependency>
+        <groupId>io.reactivex.rxjava2</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>2.1.12</version>
+    </dependency>
