@@ -95,8 +95,9 @@
 * `Schedulers.elastic()`: 在需要时创建线程池，重用空闲的线程，适用于`I/O`等阻塞式工作，类似`Executors.newCachedThreadPool()`
 * `Schedulers.parallel()`: 固定大小（`CPU`核心数）的线程池
 
-    
-    //为每个Flux分配一个线程
+
+为每个Flux分配一个线程
+
     Flux.range(0, 10)
             .publishOn(Schedulers.parallel())
             .subscribe(i -> log.info("Flux.range: {}", i));
