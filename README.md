@@ -118,7 +118,7 @@
             .runOn(Schedulers.parallel())
             .subscribe(i -> log.info("Flux.range: {}", i));
 
-### ConnectableFlux
+### 广播/ConnectableFlux
 
 通过`ConnectableFlux`，可以向多个`Subscriber`发送广播
 
