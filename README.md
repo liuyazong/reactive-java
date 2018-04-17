@@ -113,8 +113,8 @@
 `parallel(int)`和`runOn(Scheduler)`方法帮助你真正的进行异步处理：
 `parallel(int)`方法返回一个`ParallelFlux`实例，`runOn(Scheduler)`方法告诉`ParallelFlux`实例使用哪个`Scheduler`来执行任务。
 
-    Flux.range(0, 100).
-            parallel(4)
+    Flux.range(0, 100)
+            .parallel(4)
             .runOn(Schedulers.parallel())
             .subscribe(i -> log.info("Flux.range: {}", i));
 
