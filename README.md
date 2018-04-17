@@ -83,11 +83,11 @@
         log.info("for: {}", i);
     }
 
-### Scheduler
+### 异步处理/Scheduler
 
-为序列分配线程执行，而不是在调用者线程中执行。
+为序列分配线程执行，而不是在调用者线程中执行，即异步执行。
 
-`Reactor`提供了如下调度器：
+`Reactor`提供了如下`Scheduler`：
 
 * `Schedulers.immediate()`: 在当前线程执行
 * `Schedulers.single()`: 可重用的单线程
@@ -106,9 +106,9 @@
             .subscribeOn(Schedulers.parallel())
             .subscribe(i -> log.info("Flux.range: {}", i));
 
-publishOn/subscribeOn: 都会使你的操作在单独的线程中执行 
+`publishOn/subscribeOn`: 都会使你的操作在单独的线程中执行 
 
-### ParallelFlux
+### 并行处理/ParallelFlux
 
 `parallel(int)`和`runOn(Scheduler)`方法帮助你真正的进行异步处理：
 `parallel(int)`方法返回一个`ParallelFlux`实例，`runOn(Scheduler)`方法告诉`ParallelFlux`实例使用哪个`Scheduler`来执行任务。
@@ -154,3 +154,62 @@ publishOn/subscribeOn: 都会使你的操作在单独的线程中执行
         <artifactId>rxjava</artifactId>
         <version>2.1.12</version>
     </dependency>
+    
+### 主要接口
+
+* `Flowable<T>`: `public abstract class Flowable<T> implements Publisher<T>`, `0`到`N`个元素的响应式流，支持`Reactive-Streams`和`backpressure`
+
+### 构建
+
+构建与`Reactor`类似，也是`rang`、`just`、`fromXXX`几个方法
+
+### 异步处理/Scheduler
+
+`RxJava`提供了如下`Scheduler`:
+
+* `Schedulers.computation()`: 使用固定数量的专门的线程异步执行计算密集型任务
+* `Schedulers.io()`: 执行I/O等阻塞式任务
+* `Schedulers.single()`: 使用单个线程以FIFO的方式执行任务
+* `Schedulers.trampoline()`: 用于测试
+
+示例：
+
+    Flowable.range(0,10)
+            .subscribeOn(Schedulers.computation())
+            .subscribe(s -> log.info("Schedulers.computation: {}",s));
+    
+    Flowable.range(10,10)
+            .observeOn(Schedulers.computation())
+            .subscribe(s -> log.info("Schedulers.computation: {}",s));
+
+`subscribeOn/observeOn`: 与`Reactor`的`publishOn/subscribeOn`类似
+
+### 并行处理
+
+方案一：
+
+    Flowable.range(0, 10)
+            .flatMap(v -> Flowable.just(v)
+                    .subscribeOn(Schedulers.computation())
+                    .map(w -> {
+                        Integer r = w * w;
+                        log.info("parallel processing: {} * {} = {}", w, w, r);
+                        return r;
+                    }))
+            .subscribe(r -> log.info("parallel processing: {}", r));
+            
+方案二：
+
+    Flowable.range(0, 10)
+            .parallel(4)
+            .runOn(Schedulers.computation())
+            .map(w -> {
+                Integer r = w * w;
+                log.info("parallel processing: {} * {} = {}", w, w, r);
+                return r;
+            })
+            .sequential()
+            .subscribe(r -> log.info("parallel processing: {}", r));
+
+`parallel(int)`方法返回一个`ParallelFlowable<T>`。需要注意的是，`parallel(int)`和`ParallelFlowable<T>`都被标记为`beta`(`@Beta`)，在未来的`RxJava`版本中有可能会变动。
+  
