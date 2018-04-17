@@ -1,39 +1,39 @@
 # Java Reactive Programming
 
-响应式编程是一个关注数据流和变化传播的异步编程范式。它使得通过所使用的编程语言来轻松的描述静态(e.g. array)和动态(e.g. event emitters)数据流成为可能。
+响应式编程是一个关注数据流和变化传播的异步编程范式。它使得通过所使用的编程语言来轻松的描述静态(`e.g. array`)和动态(`e.g. event emitters`)数据流成为可能。
 
-[Reactive Streams Specification](http://www.reactive-streams.org/)定义了Java 响应式编程的接口规范。这个规范已被整合进Java 9 (Flow类)。
+[Reactive Streams Specification](http://www.reactive-streams.org/)定义了`Java`响应式编程的接口规范。这个规范已被整合进`Java 9` (`Flow`类)。
 
 在面向对象的编程语言中，响应式编程经常被做为观察者模式的扩展。
 
-也有人拿响应式流与迭代器模式进行对比，因为在它们的类库中都有一个Iterable-Iterator对。它们最大的不同在于，迭代器采用的是pull模式，而响应式流采用的是push模式。
+也有人拿响应式流与迭代器模式进行对比，因为在它们的类库中都有一个`Iterable-Iterator`对。它们最大的不同在于，迭代器采用的是`pull`模式，而响应式流采用的是`push`模式。
 
-迭代器是命令式编程模式，由开发者决定何时调用next()方法来获取下一个元素；而响应式编程中国，与Iterable-Iterator对等价的是Publisher-Subscriber对，由Publisher通知Subscriber有新的元素要处理。
+迭代器是命令式编程模式，由开发者决定何时调用next()方法来获取下一个元素；而响应式编程中国，与`Iterable-Iterator`对等价的是`Publisher-Subscriber`对，由`Publisher`通知`Subscriber`有新的元素要处理。
 
 这个规范定义了如下接口：
 
-* org.reactivestreams.Publisher: 无界元素序列的提供者，根据Subscriber发布这些元素。一个Publisher可以服务于多个Subscriber
+* `org.reactivestreams.Publisher`: 无界元素序列的提供者，根据`Subscriber`发布这些元素。一个`Publisher`可以服务于多个`Subscriber`
 
-* org.reactivestreams.Subscriber: 无界元素序列的消费者
+* `org.reactivestreams.Subscriber`: 无界元素序列的消费者
 
-* org.reactivestreams.Subscription: 一个订阅到Publisher的Subscriber的一对一的生命周期
+* `org.reactivestreams.Subscription`: 一个订阅到`Publisher`的`Subscriber`的一对一的生命周期
 
-* org.reactivestreams.Processor: Publisher和Subscriber都要尊从的契约
+* `org.reactivestreams.Processor`: `Publisher`和`Subscriber`都要尊从的契约
 
-Publisher/Subscriber: 1/N
+`Publisher/Subscriber`: `1/N`
 
-Subscriber/Publisher: 1/1
+`Subscriber/Publisher`: `1/1`
 
-Subscription/Subscriber: 1/1
+`Subscription/Subscriber`: `1/1`
 
 ## Reactor
 
-[Reactor](http://projectreactor.io/)是一个在JVM平台上构建非阻塞应用程序（non-blocking application）的[Reactive Streams Specification](http://www.reactive-streams.org/)的实现。
+[Reactor](http://projectreactor.io/)是一个在JVM平台上构建非阻塞应用程序（`non-blocking application`）的[Reactive Streams Specification](http://www.reactive-streams.org/)的实现。
 
-它是Spring WebFlux的Reactor默认实现，其对外提供的主要类有Flux和Mono：
+它是`Spring WebFlux`的`Reactor`默认实现，其对外提供的主要类有`Flux`和`Mono`：
 
-Flux: public abstract class Flux<T> implements Publisher<T>
-Mono: public abstract class Mono<T> implements Publisher<T>
+* `Flux<T>`: `public abstract class Flux<T> implements Publisher<T>`, `0`到`N`个元素的响应式流
+* `Mono<T>`: `public abstract class Mono<T> implements Publisher<T>`, `0`到`1`个元素的响应式流
 
 引入依赖：
 
@@ -87,13 +87,13 @@ Mono: public abstract class Mono<T> implements Publisher<T>
 
 为序列分配线程执行，而不是在调用者线程中执行。
 
-Reactor提供了如下调度器：
+`Reactor`提供了如下调度器：
 
-* Schedulers.immediate(): 在当前线程执行
-* Schedulers.single(): 可重用的单线程
-* Schedulers.newSingle(): 每次调用都创建一个新线程
-* Schedulers.elastic(): 在需要时创建线程池，重用空闲的线程，适用于I/O等阻塞式工作，类似Executors.newCachedThreadPool()
-* Schedulers.parallel(): 固定大小（CPU核心数）的线程池
+* `Schedulers.immediate()`: 在当前线程执行
+* `Schedulers.single()`: 可重用的单线程
+* `Schedulers.newSingle()`: 每次调用都创建一个新线程
+* `Schedulers.elastic()`: 在需要时创建线程池，重用空闲的线程，适用于`I/O`等阻塞式工作，类似`Executors.newCachedThreadPool()`
+* `Schedulers.parallel()`: 固定大小（`CPU`核心数）的线程池
 
     
     //为每个Flux分配一个线程
@@ -109,8 +109,8 @@ publishOn/subscribeOn: 都会使你的操作在单独的线程中执行
 
 ### ParallelFlux
 
-parallel(int)和runOn(Scheduler)方法帮助你真正的进行异步处理：
-parallel(int)方法返回一个ParallelFlux实例，runOn(Scheduler)方法告诉ParallelFlux实例使用哪个Scheduler来执行任务。
+`parallel(int)`和`runOn(Scheduler)`方法帮助你真正的进行异步处理：
+`parallel(int)`方法返回一个`ParallelFlux`实例，`runOn(Scheduler)`方法告诉`ParallelFlux`实例使用哪个`Scheduler`来执行任务。
 
     Flux.range(0, 100).
             parallel(4)
@@ -119,10 +119,10 @@ parallel(int)方法返回一个ParallelFlux实例，runOn(Scheduler)方法告诉
 
 ### ConnectableFlux
 
-通过ConnectableFlux，可以向多个Subscriber发送广播
+通过`ConnectableFlux`，可以向多个`Subscriber`发送广播
 
 
-publish()-->connect():
+`publish()-->connect()`:
 
     ConnectableFlux<Integer> flux = Flux.range(0, 4)
                     .doOnSubscribe(subscription -> log.info("doOnSubscribe: {}", subscription))
@@ -133,7 +133,7 @@ publish()-->connect():
     
     flux.connect();
 
-publish()-->autoConnect():
+`publish()-->autoConnect()`:
 
     Flux<Integer> flux = Flux.range(0, 4)
             .doOnSubscribe(subscription -> log.info("doOnSubscribe: {}", subscription))
