@@ -10,7 +10,6 @@ import reactor.core.scheduler.Schedulers;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
 
 /**
  * author: liuyazong
@@ -100,7 +99,7 @@ public class AppTest {
     }
 
     @Test
-    public void test5(){
+    public void test5() {
         //构建一个排列
         Flux.range(0, 4)
                 .subscribe(i -> log.info("Flux.range: {}", i));
