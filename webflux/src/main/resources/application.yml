@@ -1,0 +1,14 @@
+logging:
+  level:
+    org.springframework: error
+    org.springframework.test: error
+    org.springframework.boot.test: error
+    org.springframework.web.reactive: error
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: error
+    org.mongodb.driver.cluster: error
+    org.mongodb: error
+    yz.reactive: info
+
+spring:
+  profiles:
+    active: local

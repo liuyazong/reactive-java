@@ -1,0 +1,29 @@
+logging:
+  level:
+    org.springframework: error
+    org.springframework.test: error
+    org.springframework.boot.test: error
+    org.springframework.web.reactive: debug
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: debug
+    org.mongodb.driver.cluster: info
+    org.mongodb: debug
+    yz.reactive: debug
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: dev
+
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        min-idle: 8
+        max-wait: 3000
+
